@@ -300,7 +300,7 @@
             font-size: 13px;
             font-weight: 700;
             font-family: inherit;
-            color: var(--chip-text);
+            color: var(--text-main);
             cursor: pointer;
             user-select: none;
             transition: transform 0.2s ease, box-shadow 0.2s ease;
@@ -316,7 +316,7 @@
 
         .cap.active {
             border-color: transparent;
-            color: var(--chip-text);
+            color: var(--text-main);
             font-weight: 700;
             box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
         }
@@ -526,7 +526,7 @@
             font-size: 14px;
             font-weight: 500;
             font-family: inherit;
-            color: var(--chip-text);
+            color: var(--text-main);
             cursor: pointer;
             user-select: none;
             transition: transform 0.2s ease, box-shadow 0.2s ease, color 0.2s ease, background 0.2s ease;
@@ -914,6 +914,7 @@
             justify-content: space-between;
             align-items: center;
             min-height: 36px;
+            gap: 8px;
         }
 
         .pop-item:hover {
@@ -924,6 +925,55 @@
             background: rgba(52, 152, 219, 0.15);
             color: var(--highlight);
             font-weight: 600;
+        }
+
+        .pop-item.is-search-match {
+            outline: 1px solid var(--highlight);
+            background: rgba(52, 152, 219, 0.1);
+        }
+
+        .pop-option-label {
+            flex: 1;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            color: var(--text-main);
+        }
+
+        .pop-edit-btn {
+            border: none;
+            background: transparent;
+            cursor: pointer;
+            padding: 2px;
+            border-radius: 50%;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            transition: background 0.15s ease;
+            color: var(--text-sub);
+        }
+
+        .pop-edit-btn:hover {
+            background: rgba(255, 255, 255, 0.08);
+            color: var(--highlight);
+        }
+
+        .pop-edit-btn svg {
+            width: 16px;
+            height: 16px;
+            stroke: currentColor;
+        }
+
+        [data-theme="light"] .pop-edit-btn:hover {
+            background: rgba(0, 0, 0, 0.05);
+        }
+
+        [data-theme="dark"] .pop-option-label {
+            color: var(--text-main);
+        }
+
+        [data-theme="dark"] .pop-edit-btn {
+            color: #f0f0f0;
         }
 
         .pop-item.random-opt {
@@ -1443,7 +1493,7 @@
             padding: 4px 10px;
             border-radius: 12px;
             font-size: 12px;
-            color: var(--chip-text);
+            color: var(--text-main);
             font-weight: 500;
             font-family: inherit;
             display: inline-flex;
@@ -1483,7 +1533,7 @@
             font-size: 13px;
             font-weight: 600;
             background: rgba(94, 156, 126, 0.2);
-            color: var(--chip-text);
+            color: var(--text-main);
             display: inline-flex;
             align-items: center;
             gap: 6px;
@@ -1543,6 +1593,14 @@
             margin-right: -8px;
         }
 
+        .active-fav-wrapper {
+            flex: 1;
+            display: flex;
+            align-items: center;
+            gap: 4px;
+            min-width: 0;
+        }
+
         .active-fav-label {
             flex: 1;
             font-size: 14px;
@@ -1551,6 +1609,8 @@
             min-height: 24px;
             visibility: hidden;
             white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
             pointer-events: none;
         }
 
@@ -1565,6 +1625,40 @@
 
         .active-fav-label.is-editing {
             visibility: visible;
+        }
+
+        .active-fav-edit-btn {
+            display: none;
+            width: 28px;
+            height: 28px;
+            border: none;
+            border-radius: 50%;
+            background: transparent;
+            color: var(--text-sub);
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: background 0.2s ease, color 0.2s ease;
+            padding: 0;
+        }
+
+        .active-fav-edit-btn svg {
+            width: 16px;
+            height: 16px;
+            pointer-events: none;
+        }
+
+        .active-fav-edit-btn:hover {
+            color: var(--highlight);
+            background: var(--surface-hover);
+        }
+
+        .active-fav-label.is-visible + .active-fav-edit-btn {
+            display: inline-flex;
+        }
+
+        .active-fav-label.is-editing + .active-fav-edit-btn {
+            display: none;
         }
 
         .active-fav-input {
@@ -1948,7 +2042,18 @@
         <div class="editor-area">
             <div class="editor-card" id="editorContainer">
                 <div class="editor-header">
-                    <div id="activeFavoriteLabel" class="active-fav-label" tabindex="0" role="button"></div>
+                    <div class="active-fav-wrapper">
+                        <div id="activeFavoriteLabel" class="active-fav-label" tabindex="0" role="button"></div>
+                        <button type="button" class="active-fav-edit-btn" id="activeFavEditBtn"
+                            aria-label="Edit favorite" title="Edit favorite">
+                            <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                <path d="M14.586 4.414a2 2 0 012.828 0l1.172 1.172a2 2 0 010 2.828L10 17l-3.9.26.26-3.9 8.226-8.226z"
+                                    stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                                    stroke-linejoin="round" />
+                                <path d="M4 20h16" stroke="currentColor" stroke-width="2" stroke-linecap="round" />
+                            </svg>
+                        </button>
+                    </div>
                     <button class="btn-fav btn-fav-top" type="button"
                         aria-label="Add to Favorites"><svg fill="currentColor" viewBox="-1 0 19 19"
                             xmlns="http://www.w3.org/2000/svg" style="width: 24px; height: 24px;">
@@ -2074,6 +2179,7 @@
                     toastFavoriteExists: '⚠️ Already in favorites.',
                     toastFavoriteApplied: '✅ Favorite applied!',
                     toastFavoriteDeleted: '🗑️ Favorite removed.',
+                    toastFavoriteRestored: '↩️ Favorite restored.',
                     toastRollRestored: '⏪ Roll restored',
                     toastCopy: '✅ Copied to clipboard!',
                     toastCopyShort: '✅ Copied!',
@@ -2163,6 +2269,7 @@
                     toastFavoriteExists: '⚠️ 이미 즐겨찾기에 있습니다.',
                     toastFavoriteApplied: '✅ 즐겨찾기가 적용되었습니다!',
                     toastFavoriteDeleted: '🗑️ 즐겨찾기가 삭제되었습니다.',
+                    toastFavoriteRestored: '↩️ 즐겨찾기를 복원했습니다.',
                     toastRollRestored: '⏪ 히스토리를 복원했습니다.',
                     toastCopy: '✅ 복사되었습니다!',
                     toastCopyShort: '✅ 복사 완료!',
@@ -2253,6 +2360,7 @@
                     toastFavoriteExists: '⚠️ すでに登録されています。',
                     toastFavoriteApplied: '✅ お気に入りを適用しました!',
                     toastFavoriteDeleted: '🗑️ お気に入りを削除しました。',
+                    toastFavoriteRestored: '↩️ お気に入りを元に戻しました。',
                     toastRollRestored: '⏪ 履歴を復元しました。',
                     toastCopy: '✅ コピーしました!',
                     toastCopyShort: '✅ コピー完了!',
@@ -2343,6 +2451,7 @@
                     toastFavoriteExists: '⚠️ 已经在收藏列表中。',
                     toastFavoriteApplied: '✅ 已应用收藏！',
                     toastFavoriteDeleted: '🗑️ 已删除收藏。',
+                    toastFavoriteRestored: '↩️ 收藏已恢复。',
                     toastRollRestored: '⏪ 已恢复历史。',
                     toastCopy: '✅ 已复制到剪贴板！',
                     toastCopyShort: '✅ 已复制！',
@@ -2392,301 +2501,69 @@
                 }
             }
         };
-        const BaseSchema = [
+                const BaseSchema = [
             {
-                key: "subject", label: "Subject", options: [
-                    "Solo portrait",
-                    "Full body",
-                    "Bust shot",
-                    "Dynamic pose",
-                    "Character duo",
-                    "Group scene",
-                    "Hero shot",
-                    "Over-the-shoulder",
-                    "Profile portrait",
-                    "Environmental storytelling"
-                ]
+                key: "subject", label: "Subject", options: []
             },
             {
-                key: "hair", label: "Hair", options: [
-                    "Long hair",
-                    "Short hair",
-                    "Pixie cut",
-                    "Ponytail",
-                    "High ponytail",
-                    "Twin-tails",
-                    "Bob cut",
-                    "Messy hair",
-                    "Wavy hair",
-                    "Curly hair",
-                    "Braided",
-                    "Bangs",
-                    "Updo",
-                    "Undercut",
-                    "Side shave",
-                    "Twin braids",
-                    "Loose bun",
-                    "Feathered layers",
-                    "Mohawk",
-                    "Bald"
-                ]
+                key: "number", label: "Number", options: []
             },
             {
-                key: "eyes", label: "Eyes / Gaze", options: [
-                    "Looking at viewer",
-                    "Looking away",
-                    "Looking up",
-                    "Looking down",
-                    "Side glance",
-                    "Closed eyes",
-                    "Half-closed eyes",
-                    "Looking into distance",
-                    "Winking",
-                    "Tear-filled eyes",
-                    "Narrow gaze",
-                    "Dreamy gaze",
-                    "Sparkling eyes",
-                    "Glowing eyes",
-                    "Catlike pupils",
-                    "Heterochromia"
-                ]
+                key: "year", label: "Year", options: []
             },
             {
-                key: "expression", label: "Expression", options: [
-                    "Smiling",
-                    "Laughing",
-                    "Crying",
-                    "Angry",
-                    "Blushing",
-                    "Expressionless",
-                    "Seductive",
-                    "Surprised",
-                    "Determined",
-                    "Melancholic",
-                    "Shy",
-                    "Confident",
-                    "Smirk",
-                    "Mischievous",
-                    "Shocked",
-                    "Sleepy"
-                ]
+                key: "operator", label: "Math", options: []
             },
             {
-                key: "body", label: "Body", options: [
-                    "Pale skin",
-                    "Tanned skin",
-                    "Athletic",
-                    "Curvy",
-                    "Slim",
-                    "Petite",
-                    "Plus-size",
-                    "Tattoo",
-                    "Freckles",
-                    "Scar",
-                    "Tall stature",
-                    "Hourglass",
-                    "Cybernetic limb",
-                    "Mecha body",
-                    "Beast-like features"
-                ]
+                key: "job", label: "Profession", options: []
             },
             {
-                key: "outfit", label: "Outfit", options: [
-                    "School uniform",
-                    "Suit",
-                    "Armor",
-                    "Dress",
-                    "Bikini",
-                    "Streetwear",
-                    "Hanbok",
-                    "Maid outfit",
-                    "Casual hoodie",
-                    "Kimono",
-                    "Gothic lolita",
-                    "Sportswear",
-                    "Cyber suit",
-                    "Battle dress",
-                    "Desert gear",
-                    "Space suit",
-                    "Victorian gown"
-                ]
+                key: "hair", label: "Hair", options: []
             },
             {
-                key: "acc", label: "Accessory", options: [
-                    "Glasses",
-                    "Cat ears",
-                    "Choker",
-                    "Hat",
-                    "Mask",
-                    "Headphones",
-                    "Wings",
-                    "Halo",
-                    "Necklace",
-                    "Earrings",
-                    "Arm sleeves",
-                    "Mechanical halo",
-                    "Utility belt",
-                    "Visor",
-                    "Ribbon",
-                    "Shoulder cape",
-                    "Arm warmers",
-                    "Cyber visor",
-                    "Backpack"
-                ]
+                key: "eyes", label: "Eyes / Gaze", options: []
             },
             {
-                key: "action", label: "Action", options: [
-                    "Standing",
-                    "Sitting",
-                    "Running",
-                    "Leaping",
-                    "Reading",
-                    "Eating",
-                    "Fighting stance",
-                    "Peace sign",
-                    "Dancing",
-                    "Casting spell",
-                    "Holding weapon",
-                    "Floating",
-                    "Jump kick",
-                    "Hovering",
-                    "Playing instrument",
-                    "Typing on holo screen"
-                ]
+                key: "expression", label: "Expression", options: []
             },
             {
-                key: "bg", label: "Background", options: [
-                    "Simple background",
-                    "Classroom",
-                    "Bedroom",
-                    "City street",
-                    "Forest",
-                    "Beach",
-                    "Desert",
-                    "Snow field",
-                    "Mountain peak",
-                    "Space",
-                    "Cyberpunk city",
-                    "Ancient temple",
-                    "Futuristic lab",
-                    "Rainy alley",
-                    "Floating islands",
-                    "Underwater ruins",
-                    "Neon shrine"
-                ]
+                key: "body", label: "Body", options: []
             },
             {
-                key: "lighting", label: "Lighting", options: [
-                    "Natural light",
-                    "Golden hour",
-                    "Cinematic lighting",
-                    "Studio light",
-                    "Volumetric lighting",
-                    "Rim light",
-                    "Neon glow",
-                    "Backlit silhouette",
-                    "Soft diffused light",
-                    "Hard rim light",
-                    "Spotlight",
-                    "Moonlit glow",
-                    "Bonfire glow"
-                ]
+                key: "angle", label: "View / Angle", options: []
             },
             {
-                key: "quality", label: "Quality", options: [
-                    "Masterpiece",
-                    "Best quality",
-                    "Ultra detailed",
-                    "8k",
-                    "High resolution",
-                    "Sharp focus",
-                    "Film grain",
-                    "Photorealistic",
-                    "Painterly",
-                    "Stylized render"
-                ]
+                key: "shot", label: "Shot Type", options: []
             },
             {
-                key: "color", label: "Color", options: [
-                    "Red",
-                    "Blue",
-                    "Green",
-                    "Yellow",
-                    "Orange",
-                    "Pink",
-                    "Teal",
-                    "Silver",
-                    "Gold",
-                    "Black",
-                    "White",
-                    "Purple",
-                    "Rainbow",
-                    "Pastel",
-                    "Neon",
-                    "Dark",
-                    "Monochrome",
-                    "Pastel rainbow"
-                ]
+                key: "outfit", label: "Outfit", options: []
             },
             {
-                key: "material", label: "Material", options: [
-                    "Silk",
-                    "Latex",
-                    "Leather",
-                    "Denim",
-                    "Cotton",
-                    "Metal",
-                    "Plastic",
-                    "Lace",
-                    "Knitted",
-                    "Sheer",
-                    "Armor",
-                    "Velvet",
-                    "Satin",
-                    "Faux fur",
-                    "Holographic",
-                    "Wood",
-                    "Stone",
-                    "Crystalline"
-                ]
+                key: "acc", label: "Accessory", options: []
             },
             {
-                key: "vibe", label: "Vibe", options: [
-                    "Dark",
-                    "Cozy",
-                    "Cyberpunk",
-                    "Vintage",
-                    "Dreamy",
-                    "Horror",
-                    "Romantic",
-                    "Sci-fi",
-                    "Fantasy",
-                    "Mystical",
-                    "Noir",
-                    "Steampunk",
-                    "Epic",
-                    "Chill",
-                    "Playful",
-                    "Melancholy",
-                    "Retro-futuristic"
-                ]
+                key: "action", label: "Action", options: []
             },
             {
-                key: "pattern", label: "Pattern", options: [
-                    "Striped",
-                    "Checkered",
-                    "Polka dot",
-                    "Floral",
-                    "Camouflage",
-                    "Paisley",
-                    "Houndstooth",
-                    "Galaxy",
-                    "Geometric",
-                    "Chevron",
-                    "Tribal",
-                    "Circuitry",
-                    "Ink splatter"
-                ]
+                key: "bg", label: "Background", options: []
+            },
+            {
+                key: "lighting", label: "Lighting", options: []
+            },
+            {
+                key: "quality", label: "Quality", options: []
+            },
+            {
+                key: "color", label: "Color", options: []
+            },
+            {
+                key: "material", label: "Material", options: []
+            },
+            {
+                key: "vibe", label: "Vibe", options: []
+            },
+            {
+                key: "pattern", label: "Pattern", options: []
             }
         ];
         const ICON_COPY = `<svg viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg" fill="none" style="width: 20px; height: 20px;"><g stroke-width="0"></g><g stroke-linecap="round" stroke-linejoin="round"></g><g> <path fill="currentColor" fill-rule="evenodd" d="M4 2a2 2 0 00-2 2v9a2 2 0 002 2h2v2a2 2 0 002 2h9a2 2 0 002-2V8a2 2 0 00-2-2h-2V4a2 2 0 00-2-2H4zm9 4V4H4v9h2V8a2 2 0 012-2h5zM8 8h9v9H8V8z"></path> </g></svg>`;
@@ -2844,7 +2721,7 @@
             constructor() {
                 this.STORAGE_KEY = 'promania_v2_1_data';
                 this.LOCALE_KEY = 'promania_locale';
-                this.APP_VERSION = 'PromIt 1.0';
+                this.APP_VERSION = 'Promit 1.0';
                 this.DATA_SCHEMA_VERSION = 1;
                 this.MAX_HISTORY = 50;
                 this.items = [];
@@ -2859,6 +2736,7 @@
                 this.activeDockTab = 'favorites';
                 this.capLabels = {};
                 this.rollHistory = [];
+                this.favoriteUndoStack = [];
                 this.capsuleOrder = [];
                 this.capsuleDragIndex = null;
                 this.capEditDialogEl = null;
@@ -2882,6 +2760,7 @@
                 this.capsulesDirty = true;
                 this.dockDirty = true;
                 this.MAX_ROLL_HISTORY = 30;
+                this.FAVORITE_UNDO_LIMIT = 10;
                 this.isSettingsMenuOpen = false;
                 this.AUTO_COPY_STORAGE_KEY = 'promania_v2_auto_copy';
                 this.isAutoCopyEnabled = localStorage.getItem(this.AUTO_COPY_STORAGE_KEY) === '1';
@@ -2937,7 +2816,9 @@
                         const key = e.key.toLowerCase();
                         if (key === 'z' && !e.shiftKey) {
                             e.preventDefault();
-                            this.navHistory(-1);
+                            if (!this.undoFavoriteDeletion()) {
+                                this.navHistory(-1);
+                            }
                         } else if ((key === 'z' && e.shiftKey) || (key === 'y' && !e.shiftKey)) {
                             e.preventDefault();
                             this.navHistory(1);
@@ -3086,6 +2967,7 @@
                 this.skipFavoriteLabelClear = false;
                 this.latestFavoriteId = null;
                 this.favoriteDragId = null;
+                this.favoriteUndoStack = [];
             }
             getDefaultCapsuleOrder() {
                 return BaseSchema.map(def => def.key);
@@ -3129,17 +3011,28 @@
             initActiveFavoriteLabelHandler() {
                 const label = document.getElementById('activeFavoriteLabel');
                 if (!label) return;
-                label.addEventListener('click', () => {
+                const triggerEdit = () => {
                     if (!this.activeFavoriteId || label.classList.contains('is-editing') || this.activeFavoriteLabelCooldown) return;
                     this.beginActiveFavoriteInlineEdit();
+                };
+                label.addEventListener('click', () => {
+                    triggerEdit();
                 });
                 label.addEventListener('keydown', (e) => {
                     if (label.classList.contains('is-editing') || this.activeFavoriteLabelCooldown) return;
                     if ((e.key === 'Enter' || e.key === ' ') && this.activeFavoriteId) {
                         e.preventDefault();
-                        this.beginActiveFavoriteInlineEdit();
+                        triggerEdit();
                     }
                 });
+                const editBtn = document.getElementById('activeFavEditBtn');
+                if (editBtn) {
+                    editBtn.addEventListener('click', (event) => {
+                        event.preventDefault();
+                        event.stopPropagation();
+                        triggerEdit();
+                    });
+                }
             }
             bindStaticEventHandlers() {
                 const helpBtn = document.querySelector('.help-btn');
@@ -3756,9 +3649,28 @@
                     chip.appendChild(iconSpan);
                 }
                 chip.appendChild(document.createTextNode(item.value || `+ ${item.label}`));
-                chip.onclick = () => this.openPopover(item, chip);
+                chip.onclick = () => this.handleChipClick(item, chip);
                 this.setupDragEvents(chip, item, idx);
                 return chip;
+            }
+
+            handleChipClick(item, chipEl) {
+                if (!item || !chipEl) return;
+                if (chipEl.isLongPress) {
+                    chipEl.isLongPress = false;
+                    return;
+                }
+                if (chipEl.isDragging) {
+                    chipEl.isDragging = false;
+                    return;
+                }
+                const pop = document.getElementById('popover');
+                const isSameActive = pop && pop.classList.contains('active') && this.activePopoverKey === item.id;
+                if (isSameActive) {
+                    this.closePopover();
+                    return;
+                }
+                this.openPopover(item, chipEl);
             }
 
             setupDragEvents(el, item, idx) {
@@ -3768,6 +3680,7 @@
                     this.dragSrcEl = { item, idx };
                     this.dragType = 'chip';
                     el.classList.add('dragging');
+                    el.isDragging = true;
                     e.dataTransfer.effectAllowed = 'move';
                     e.dataTransfer.setData('text/plain', JSON.stringify({ source: 'chip', id: item.id }));
                     document.body.classList.add('is-dragging');
@@ -3775,6 +3688,7 @@
 
                 el.ondragend = () => {
                     el.classList.remove('dragging');
+                    el.isDragging = false;
                     this.dragSrcEl = null;
                     this.dragType = null;
                     this.clearGapPreview();
@@ -4328,6 +4242,12 @@
                 if (langBtn) langBtn.setAttribute('aria-label', this.t('languageAria'));
                 const favBtn = document.querySelector('.btn-fav');
                 if (favBtn) favBtn.setAttribute('aria-label', this.t('btnFavAria'));
+                const favEditBtn = document.getElementById('activeFavEditBtn');
+                if (favEditBtn) {
+                    const editLabel = this.t('favEditTitle');
+                    favEditBtn.setAttribute('aria-label', editLabel);
+                    favEditBtn.setAttribute('title', editLabel);
+                }
                 const genBtn = document.querySelector('.btn-gen');
                 if (genBtn) genBtn.setAttribute('aria-label', this.t('btnGenerateAria'));
                 const copyBtn = document.querySelector('.btn-copy');
@@ -4364,7 +4284,9 @@
                 opts.forEach(opt => {
                     const selected = (item.value === opt && !item.isRandom) ? 'selected' : '';
                     const safeVal = this.escapeAttribute(opt);
-                    html += `<div class="pop-item ${selected}" data-val="${safeVal}">${this.escapeHtml(opt)}</div>`;
+                    const label = this.escapeHtml(opt);
+                    const editLabel = this.escapeAttribute(this.t('favEditTitle'));
+                    html += `<div class="pop-item ${selected}" data-val="${safeVal}"><span class="pop-option-label">${label}</span><button type="button" class="pop-edit-btn" data-edit-val="${safeVal}" aria-label="${editLabel}">${this.getEditIcon()}</button></div>`;
                 });
                 html += `</div>`;
                 const placeholder = this.escapeAttribute(this.t('popoverAddPlaceholder'));
@@ -4394,8 +4316,23 @@
                 }
                 pop.querySelectorAll('.pop-item[data-val]').forEach(el => {
                     const val = el.getAttribute('data-val');
-                    el.addEventListener('click', () => this.setValue(item.id, val));
-                    this.addLongPress(el, () => this.enableInlineEdit(el, item.type, val), 800);
+                    el.addEventListener('click', () => {
+                        if (el.isLongPress) {
+                            el.isLongPress = false;
+                            return;
+                        }
+                        this.setValue(item.id, val);
+                    });
+                });
+                pop.querySelectorAll('.pop-edit-btn').forEach(btn => {
+                    btn.addEventListener('click', (event) => {
+                        event.stopPropagation();
+                        const editVal = btn.getAttribute('data-edit-val');
+                        const container = btn.closest('.pop-item');
+                        if (container && editVal !== null) {
+                            this.enableInlineEdit(container, item.type, editVal);
+                        }
+                    });
                 });
                 const addInput = pop.querySelector('.pop-add-input');
                 if (addInput) {
@@ -4404,6 +4341,12 @@
                             event.preventDefault();
                             this.addOption(item.type, item.id, addInput.value);
                         }
+                    });
+                    addInput.addEventListener('input', () => {
+                        this.highlightPopoverMatch(addInput.value);
+                    });
+                    requestAnimationFrame(() => {
+                        this.highlightPopoverMatch(addInput.value);
                     });
                 }
             }
@@ -4418,6 +4361,25 @@
                     this.optionsData[type] = this.sortOptionsList(this.optionsData[type]);
                 }
                 this.setValue(id, val);
+            }
+            highlightPopoverMatch(value) {
+                const pop = document.getElementById('popover');
+                if (!pop) return;
+                const items = Array.from(pop.querySelectorAll('.pop-item[data-val]'));
+                items.forEach(el => el.classList.remove('is-search-match'));
+                const query = (value || '').trim().toLowerCase();
+                if (!query) return;
+                const match = items.find(el => {
+                    const val = el.getAttribute('data-val') || '';
+                    return val.toLowerCase().startsWith(query);
+                });
+                if (match) {
+                    match.classList.add('is-search-match');
+                    match.scrollIntoView({ block: 'nearest' });
+                }
+            }
+            getEditIcon() {
+                return `<svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M14.586 4.414a2 2 0 012.828 0l1.172 1.172a2 2 0 010 2.828L10 17l-3.9.26.26-3.9 8.226-8.226z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/><path d="M4 20h16" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>`;
             }
             enableInlineEdit(el, type, oldVal) {
                 el.onclick = null;
@@ -4448,7 +4410,21 @@
                         }
                     }
                 };
-                input.onblur = save; input.onkeydown = (e) => { if (e.key === 'Enter') { e.preventDefault(); input.blur(); } }; input.onclick = (e) => e.stopPropagation();
+                input.addEventListener('blur', save);
+                input.addEventListener('keydown', (e) => {
+                    if (e.key === 'Enter') {
+                        e.preventDefault();
+                        input.blur();
+                    }
+                    if (e.key === 'Escape') {
+                        e.preventDefault();
+                        input.value = oldVal;
+                        input.blur();
+                    }
+                });
+                input.addEventListener('click', (e) => e.stopPropagation());
+                input.addEventListener('mousedown', (e) => e.stopPropagation());
+                input.addEventListener('mouseup', (e) => e.stopPropagation());
             }
             openCapEditDialog(key, capEl) {
                 if (!capEl) return;
@@ -4996,7 +4972,10 @@
                 const text = this.generatePrompt();
                 if (!text) { alert(this.t('alertEmptyPrompt')); return; }
                 const existingIdx = this.favorites.findIndex(f => f.text === text);
-                if (existingIdx !== -1) { this.showToast(this.t('toastFavoriteExists')); return; }
+                if (existingIdx !== -1) {
+                    this.deleteFavorite(existingIdx);
+                    return;
+                }
                 const favItem = {
                     id: Date.now(),
                     name: this.generateFavoriteName(),
@@ -5046,18 +5025,49 @@
                 this.updateFavButtonState();
                 this.updateActiveFavoriteLabel();
             }
-            deleteFavorite(idx) {
+            pushFavoriteUndo(entry) {
+                if (!entry || !entry.favorite) return;
+                if (!this.favoriteUndoStack) this.favoriteUndoStack = [];
+                this.favoriteUndoStack.push(entry);
+                if (this.favoriteUndoStack.length > (this.FAVORITE_UNDO_LIMIT || 10)) {
+                    this.favoriteUndoStack.shift();
+                }
+            }
+            undoFavoriteDeletion() {
+                if (!this.favoriteUndoStack || this.favoriteUndoStack.length === 0) return false;
+                const entry = this.favoriteUndoStack.pop();
+                if (!entry || !entry.favorite) return false;
+                const targetIndex = Math.min(Math.max(entry.index ?? this.favorites.length, 0), this.favorites.length);
+                this.favorites.splice(targetIndex, 0, entry.favorite);
+                this.saveData();
+                this.renderDockList();
+                this.updateFavButtonState();
+                this.showToast(this.t('toastFavoriteRestored'));
+                return true;
+            }
+            deleteFavorite(idx, options = {}) {
                 if (idx < 0 || idx >= this.favorites.length) return;
-                const removed = this.favorites.splice(idx, 1)[0];
+                const { skipToast = false, recordUndo = true } = options;
+                const removed = this.favorites[idx];
+                if (!removed) return;
+                const wasActive = removed.id === this.activeFavoriteId;
+                const removedClone = JSON.parse(JSON.stringify(removed));
+                this.favorites.splice(idx, 1);
+                if (recordUndo) {
+                    this.pushFavoriteUndo({ favorite: removedClone, index: idx });
+                }
                 this.saveData();
                 if (this.favorites.length === 0) this.isDockDeleteMode = false;
-                if (removed && removed.id === this.activeFavoriteId) {
+                if (wasActive) {
                     this.clearActiveFavoriteLabel();
                 }
                 this.closeFavoriteEditDialog();
                 this.renderDockList();
                 this.updateFavButtonState();
-                this.showToast(this.t('toastFavoriteDeleted'));
+                if (!skipToast) {
+                    this.showToast(this.t('toastFavoriteDeleted'));
+                }
+                return removed;
             }
             deleteRollHistoryEntry(idx) {
                 if (idx < 0 || idx >= this.rollHistory.length) return;
