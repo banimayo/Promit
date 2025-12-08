@@ -370,28 +370,28 @@ const Palette = [
                 }
             }
         };
-                const FALLBACK_CAPSULES = [
-        { key: "subject", label: "Subject" },
-        { key: "number", label: "Number" },
-        { key: "year", label: "Year" },
-        { key: "operator", label: "Operator" },
-        { key: "profession", label: "Profession" },
-        { key: "hair", label: "Hair" },
-        { key: "eyes", label: "Eyes" },
-        { key: "expression", label: "Expression" },
-        { key: "body", label: "Body" },
-        { key: "angle", label: "Angle" },
-        { key: "shot", label: "Shot" },
-        { key: "outfit", label: "Outfit" },
-        { key: "acc", label: "Accessory" },
-        { key: "action", label: "Action" },
-        { key: "bg", label: "Background" },
-        { key: "lighting", label: "Lighting" },
-        { key: "quality", label: "Quality" },
-        { key: "color", label: "Color" },
-        { key: "material", label: "Material" },
-        { key: "vibe", label: "Vibe" },
-        { key: "pattern", label: "Pattern" }
+        const FALLBACK_CAPSULES = [
+        { key: "subject", label: "Subject", index: 0, options: [] },
+        { key: "number", label: "Number", index: 1, options: [] },
+        { key: "year", label: "Year", index: 2, options: [] },
+        { key: "operator", label: "Operator", index: 3, options: [] },
+        { key: "profession", label: "Profession", index: 4, options: [] },
+        { key: "hair", label: "Hair", index: 5, options: [] },
+        { key: "eyes", label: "Eyes", index: 6, options: [] },
+        { key: "expression", label: "Expression", index: 7, options: [] },
+        { key: "body", label: "Body", index: 8, options: [] },
+        { key: "angle", label: "Angle", index: 9, options: [] },
+        { key: "shot", label: "Shot", index: 10, options: [] },
+        { key: "outfit", label: "Outfit", index: 11, options: [] },
+        { key: "acc", label: "Accessory", index: 12, options: [] },
+        { key: "action", label: "Action", index: 13, options: [] },
+        { key: "bg", label: "Background", index: 14, options: [] },
+        { key: "lighting", label: "Lighting", index: 15, options: [] },
+        { key: "quality", label: "Quality", index: 16, options: [] },
+        { key: "color", label: "Color", index: 17, options: [] },
+        { key: "material", label: "Material", index: 18, options: [] },
+        { key: "vibe", label: "Vibe", index: 19, options: [] },
+        { key: "pattern", label: "Pattern", index: 20, options: [] }
     ];
         const ICON_COPY = `<svg viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg" fill="none" style="width: 20px; height: 20px;"><g stroke-width="0"></g><g stroke-linecap="round" stroke-linejoin="round"></g><g> <path fill="currentColor" fill-rule="evenodd" d="M4 2a2 2 0 00-2 2v9a2 2 0 002 2h2v2a2 2 0 002 2h9a2 2 0 002-2V8a2 2 0 00-2-2h-2V4a2 2 0 00-2-2H4zm9 4V4H4v9h2V8a2 2 0 012-2h5zM8 8h9v9H8V8z"></path> </g></svg>`;
 
@@ -546,8 +546,8 @@ const Palette = [
 
         class PromptManager {
             constructor() {
-                this.STORAGE_KEY = 'promit_v1_data';
-                this.LEGACY_STORAGE_KEYS = ['promania_v2_1_data'];
+                this.STORAGE_KEY = null;
+                this.LEGACY_STORAGE_KEYS = [];
                 this.LOCALE_KEY = 'promit_locale';
                 this.LEGACY_LOCALE_KEYS = ['promania_locale'];
                 this.THEME_KEY = 'promit-theme';
@@ -693,15 +693,16 @@ const Palette = [
                     : FALLBACK_CAPSULES;
                 const seen = new Set();
                 this.baseCapsules = [];
-                rawCapsules.forEach(cap => {
+                rawCapsules.forEach((cap, idx) => {
                     const key = (cap?.key || '').trim();
                     if (!key || seen.has(key)) return;
                     const label = cap?.label || cap?.name || key;
-                    this.baseCapsules.push({ key, label });
+                    const baseOptions = Array.isArray(cap?.options) ? cap.options.slice() : [];
+                    this.baseCapsules.push({ key, label, index: idx, options: baseOptions });
                     seen.add(key);
                 });
                 if (!this.baseCapsules.length) {
-                    this.baseCapsules = [...FALLBACK_CAPSULES];
+                    this.baseCapsules = FALLBACK_CAPSULES.map((cap, idx) => ({ ...cap, index: idx, options: [] }));
                 }
                 this.baseCapsuleMap = {};
                 this.baseCapsules.forEach((cap, idx) => {
@@ -716,7 +717,19 @@ const Palette = [
                         this.baseCapsuleOrder.push(key);
                     }
                 });
-                this.baseOptionsData = this.cloneData(data?.optionsData || {}, {});
+                const optionsFromCapsules = {};
+                this.baseCapsules.forEach(cap => {
+                    if (Array.isArray(cap.options) && cap.options.length) {
+                        optionsFromCapsules[cap.key] = cap.options.slice();
+                    }
+                });
+                const mergedOptions = this.cloneData(data?.optionsData || {}, {});
+                Object.keys(optionsFromCapsules).forEach(key => {
+                    if (!Array.isArray(mergedOptions[key]) || !mergedOptions[key].length) {
+                        mergedOptions[key] = optionsFromCapsules[key];
+                    }
+                });
+                this.baseOptionsData = mergedOptions;
                 this.baseDefaultState = {
                     items: this.cloneData(data?.items || [], []),
                     optionsData: this.baseOptionsData,
@@ -826,64 +839,7 @@ const Palette = [
                 return sorted;
             }
             loadData() {
-                try {
-                    const stored = this.getStoredStateBlob();
-                    if (!stored) return false;
-                    const data = JSON.parse(stored.raw);
-                    const storedSchema = Number.isInteger(data.schemaVersion) ? data.schemaVersion : 0;
-                    if (storedSchema > this.DATA_SCHEMA_VERSION) {
-                        console.warn('Stored data uses newer schema.');
-                        return false;
-                    }
-                    this.items = this.flattenItems(data.items || []);
-                    this.optionsData = data.optionsData || this.optionsData;
-                    this.customTypes = data.customTypes || [];
-                    this.favorites = data.favorites || [];
-                    this.capLabels = data.capLabels || {};
-                    this.rollHistory = data.rollHistory || this.rollHistory;
-                    this.capsuleOrder = data.capsuleOrder || [];
-                    this.removedCapsules = data.removedCapsules || [];
-                    this.randomDecks = data.randomDecks || {};
-                    const migrated = this.migrateLegacyTypesInCurrentState();
-                    this.cleanupRandomDecks();
-                    this.repairMissingCapsules();
-                    this.activeFavoriteId = null;
-                    this.activeFavoriteName = '';
-                    this.skipFavoriteLabelClear = false;
-                    this.ensureFavoriteNames();
-                    this.sortAllOptions();
-                    this.syncCapsuleOrder();
-                    this.capsulesDirty = true;
-                    if (stored.isLegacy || migrated) {
-                        this.saveData();
-                        if (stored.isLegacy) {
-                            this.clearLegacyStorageEntries();
-                        }
-                    }
-                    return true;
-                } catch (e) { console.error(e); return false; }
-            }
-            getStoredStateBlob() {
-                try {
-                    const raw = localStorage.getItem(this.STORAGE_KEY);
-                    if (raw) {
-                        return { raw, isLegacy: false };
-                    }
-                } catch (err) { }
-                if (Array.isArray(this.LEGACY_STORAGE_KEYS)) {
-                    for (const key of this.LEGACY_STORAGE_KEYS) {
-                        try {
-                            const legacyRaw = localStorage.getItem(key);
-                            if (legacyRaw) {
-                                return { raw: legacyRaw, isLegacy: true };
-                            }
-                        } catch (err) { }
-                    }
-                }
-                return null;
-            }
-            clearLegacyStorageEntries() {
-                this.clearLegacyKeys(this.LEGACY_STORAGE_KEYS);
+                return false;
             }
             flattenItems(list) {
                 let flat = [];
@@ -907,7 +863,6 @@ const Palette = [
                     customTypes: this.customTypes,
                     favorites: this.favorites,
                     capLabels: this.capLabels,
-                    randomDecks: this.randomDecks,
                     capsuleOrder: this.capsuleOrder,
                     removedCapsules: this.removedCapsules
                 };
@@ -917,9 +872,7 @@ const Palette = [
                 return snapshot;
             }
             saveData() {
-                const data = this.buildStateSnapshot({ includeHistory: true });
-                localStorage.setItem(this.STORAGE_KEY, JSON.stringify(data));
-                this.clearLegacyStorageEntries();
+                return;
             }
             initDefaultData() {
                 const defaults = this.baseDefaultState || this.getFallbackBaseData();
@@ -2064,6 +2017,7 @@ const Palette = [
                 if (!this.validateSchemaVersion(payload)) return null;
                 if (!Array.isArray(payload.items) || !this.isPlainObject(payload.optionsData)) return null;
                 const optionsClone = this.cloneData(payload.optionsData || {}, {});
+                this.seedOptionsFromDecks(optionsClone, payload.randomDecks || {});
                 const safe = {
                     schemaVersion: this.DATA_SCHEMA_VERSION,
                     version: typeof payload.version === 'string' ? payload.version : this.APP_VERSION,
@@ -2073,7 +2027,6 @@ const Palette = [
                     favorites: this.cloneData(payload.favorites || [], []),
                     capLabels: this.cloneData(payload.capLabels || {}, {}),
                     rollHistory: this.cloneData(payload.rollHistory || [], []),
-                    randomDecks: this.sanitizeRandomDecks(payload.randomDecks || {}, optionsClone),
                     capsuleOrder: this.cloneData(payload.capsuleOrder || [], []),
                     removedCapsules: this.cloneData(payload.removedCapsules || [], [])
                 };
@@ -2083,39 +2036,31 @@ const Palette = [
             sanitizePartialImport(payload) {
                 if (!this.isPlainObject(payload)) return null;
                 if (!this.validateSchemaVersion(payload)) return null;
+                const optionsClone = this.cloneData(payload.optionsData || {}, {});
+                this.seedOptionsFromDecks(optionsClone, payload.randomDecks || {});
                 return {
                     favorites: this.cloneData(payload.favorites || [], []),
                     customTypes: this.cloneData(payload.customTypes || [], []),
                     capLabels: this.cloneData(payload.capLabels || {}, {}),
-                    optionsData: this.cloneData(payload.optionsData || {}, {})
+                    optionsData: optionsClone
                 };
             }
-            sanitizeRandomDecks(sourceDecks, optionsData) {
-                if (!this.isPlainObject(sourceDecks) || !this.isPlainObject(optionsData)) return {};
-                const sanitized = {};
-                Object.keys(sourceDecks).forEach(type => {
-                    const deck = sourceDecks[type];
-                    if (!deck || !Array.isArray(deck.remaining)) return;
+            seedOptionsFromDecks(optionsData, decks) {
+                if (!this.isPlainObject(optionsData) || !this.isPlainObject(decks)) return;
+                Object.keys(decks).forEach(type => {
+                    const deck = decks[type];
+                    if (!deck) return;
                     if (!Array.isArray(optionsData[type])) optionsData[type] = [];
-                    const signatureValues = this.parseDeckSignature(deck.signature);
-                    const mergeValues = Array.isArray(signatureValues) && signatureValues.length
-                        ? signatureValues
-                        : deck.remaining;
-                    mergeValues.forEach(val => {
+                    const signatureValues = this.parseDeckSignature(deck.signature) || [];
+                    const remainingValues = Array.isArray(deck.remaining) ? deck.remaining : [];
+                    const combined = [...signatureValues, ...remainingValues];
+                    combined.forEach(val => {
                         if (!optionsData[type].includes(val)) {
                             optionsData[type].push(val);
                         }
                     });
                     optionsData[type] = this.sortOptionsList(optionsData[type]);
-                    const allowed = new Set(optionsData[type]);
-                    const filtered = deck.remaining.filter(val => allowed.has(val));
-                    if (!filtered.length) return;
-                    sanitized[type] = {
-                        remaining: filtered,
-                        signature: this.getOptionsSignature(optionsData[type])
-                    };
                 });
-                return sanitized;
             }
             parseDeckSignature(signature) {
                 if (typeof signature !== 'string' || !signature.trim()) return null;
@@ -2126,7 +2071,32 @@ const Palette = [
                     return null;
                 }
             }
-
+            applyStatePayload(state) {
+                if (!state || typeof state !== 'object') return;
+                this.items = this.flattenItems(state.items || []);
+                this.optionsData = this.cloneData(state.optionsData || {}, {});
+                this.customTypes = this.cloneData(state.customTypes || [], []);
+                this.favorites = this.cloneData(state.favorites || [], []);
+                this.capLabels = this.cloneData(state.capLabels || {}, {});
+                this.rollHistory = this.cloneData(state.rollHistory || [], []);
+                this.capsuleOrder = Array.isArray(state.capsuleOrder) && state.capsuleOrder.length
+                    ? [...state.capsuleOrder]
+                    : this.getDefaultCapsuleOrder();
+                this.removedCapsules = this.cloneData(state.removedCapsules || [], []);
+                this.randomDecks = {};
+                this.history = [];
+                this.historyIndex = -1;
+                this.ensureFavoriteNames();
+                this.repairMissingCapsules({ persist: false });
+                this.sortAllOptions();
+                this.syncCapsuleOrder();
+                this.activeFavoriteId = null;
+                this.activeFavoriteName = '';
+                this.skipFavoriteLabelClear = false;
+                this.capsulesDirty = true;
+                this.dockDirty = true;
+                this.pushHistory();
+            }
             deriveLabelFromKey(key, state = null) {
                 if (!key) return 'Custom Capsule';
                 const labels = state && state.capLabels;
@@ -2169,7 +2139,6 @@ const Palette = [
                 Object.keys(state.capLabels || {}).forEach(collect);
                 (state.rollHistory || []).forEach(entry => (entry?.items || []).forEach(item => collect(item?.type)));
                 (state.capsuleOrder || []).forEach(collect);
-                Object.keys(state.randomDecks || {}).forEach(collect);
                 let added = false;
                 pending.forEach(key => {
                     const label = this.deriveLabelFromKey(key, state);
@@ -2197,8 +2166,7 @@ const Palette = [
                     favorites: this.favorites,
                     capLabels: this.capLabels,
                     rollHistory: this.rollHistory,
-                    capsuleOrder: this.capsuleOrder,
-                    randomDecks: this.randomDecks
+                    capsuleOrder: this.capsuleOrder
                 };
                 const updated = this.ensureMissingCapsules(stateRef);
                 if (updated) {
@@ -3156,8 +3124,6 @@ const Palette = [
             }
             clearAllStorage() {
                 try {
-                    localStorage.removeItem(this.STORAGE_KEY);
-                    this.clearLegacyStorageEntries();
                     localStorage.removeItem(this.THEME_KEY);
                     this.clearLegacyKeys(this.LEGACY_THEME_KEYS);
                     localStorage.removeItem(this.AUTO_COPY_STORAGE_KEY);
@@ -3222,9 +3188,12 @@ const Palette = [
                         return;
                     }
                     if (!confirm(this.t('confirmReset'))) return;
-                    this.clearAllStorage();
-                    localStorage.setItem(this.STORAGE_KEY, JSON.stringify(sanitized));
-                    location.reload();
+                    this.applyStatePayload(sanitized);
+                    this.render();
+                    this.updateSettingsMenu();
+                    this.updateLanguageMenu();
+                    this.updateHelpContent();
+                    this.showToast(this.t('toastImportSuccess'));
                     return;
                 }
                 const partial = this.sanitizePartialImport(payload);
@@ -3232,21 +3201,19 @@ const Palette = [
                     alert(this.t('importError') + 'Invalid favorites data');
                     return;
                 }
-                this.initDefaultData();
-                this.optionsData = partial.optionsData || {};
-                this.initOptionsData();
-                this.randomDecks = {};
-                this.favorites = partial.favorites;
-                this.ensureFavoriteNames();
+                if (partial.optionsData) {
+                    Object.keys(partial.optionsData).forEach(key => {
+                        this.optionsData[key] = this.sortOptionsList(partial.optionsData[key]);
+                    });
+                }
                 this.customTypes = partial.customTypes;
                 this.capLabels = partial.capLabels;
-                this.migrateLegacyTypesInCurrentState();
-                this.cleanupRandomDecks();
+                this.favorites = partial.favorites;
+                this.ensureFavoriteNames();
                 this.repairMissingCapsules({ persist: false });
                 this.syncCapsuleOrder();
                 this.capsulesDirty = true;
                 this.dockDirty = true;
-                this.saveData();
                 this.render();
                 this.showToast(this.t('toastImportSuccess'));
             }
