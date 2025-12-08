@@ -100,7 +100,7 @@
       "[ ]",
       "{ }"
     ],
-    "job": [
+    "profession": [
       "Teacher",
       "Professor",
       "Student",
@@ -484,7 +484,7 @@
     "number",
     "year",
     "operator",
-    "job",
+    "profession",
     "hair",
     "eyes",
     "expression",
@@ -502,5 +502,91 @@
     "vibe",
     "pattern"
   ],
-  "removedCapsules": []
+  "removedCapsules": [],
+  "capsules": [
+    {
+      "key": "subject",
+      "label": "Subject"
+    },
+    {
+      "key": "number",
+      "label": "Number"
+    },
+    {
+      "key": "year",
+      "label": "Year"
+    },
+    {
+      "key": "operator",
+      "label": "Operator"
+    },
+    {
+      "key": "profession",
+      "label": "Profession"
+    },
+    {
+      "key": "hair",
+      "label": "Hair"
+    },
+    {
+      "key": "eyes",
+      "label": "Eyes"
+    },
+    {
+      "key": "expression",
+      "label": "Expression"
+    },
+    {
+      "key": "body",
+      "label": "Body"
+    },
+    {
+      "key": "angle",
+      "label": "Angle"
+    },
+    {
+      "key": "shot",
+      "label": "Shot"
+    },
+    {
+      "key": "outfit",
+      "label": "Outfit"
+    },
+    {
+      "key": "acc",
+      "label": "Accessory"
+    },
+    {
+      "key": "action",
+      "label": "Action"
+    },
+    {
+      "key": "bg",
+      "label": "Background"
+    },
+    {
+      "key": "lighting",
+      "label": "Lighting"
+    },
+    {
+      "key": "quality",
+      "label": "Quality"
+    },
+    {
+      "key": "color",
+      "label": "Color"
+    },
+    {
+      "key": "material",
+      "label": "Material"
+    },
+    {
+      "key": "vibe",
+      "label": "Vibe"
+    },
+    {
+      "key": "pattern",
+      "label": "Pattern"
+    }
+  ]
 }
