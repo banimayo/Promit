@@ -7,7 +7,7 @@ window.LOCALES.zh = {
 <ul class="help-list">
 <li><span class="inline-capsule-label">胶囊</span>可点击或拖放来随意添加筹码。</li>
 <li><span class="inline-chip-label">筹码</span>能插入到任意位置并重新排序，拖到🗑删除区域即可快速删除。</li>
-<li>点击筹码可编辑选项，长按条目可重命名，留空即可删除。</li>
+<li>点击筹码可编辑选项，长按可进入编辑模式。</li>
 <li>点击筹码前的 🎲 将其切换为 🔒，即可固定该筹码。</li>
 <li>点击筹码之间可连接/断开，用来切换空格或逗号输出。</li>
 <li><strong>Ctrl + 拖动</strong> 可将连接的筹码单独分离移动或删除。</li>
@@ -20,13 +20,13 @@ window.LOCALES.zh = {
 <h3>3. 收藏与历史</h3>
 <ul class="help-list">
 <li>⭐ 收藏 是可拖放的预设：拖到编辑区插入局部，点击可直接套用整套。</li>
-<li>⏱ 历史 可以查看之前的掷骰结果，可用 <span class="inline-key">Ctrl+Z / Ctrl+Shift+Z</span> 或 🎲 两侧的箭头浏览。</li>
-<li>长按收藏筹码即可重命名或删除。</li>
+<li>将生成记录或收藏<strong>拖到编辑器</strong>即可加载，拖进🗑 <strong>垃圾桶即可删除</strong>。</li>
+<li><span class="inline-key">Ctrl+Z / Ctrl+Shift+Z</span> 可以撤销几乎所有操作：编辑、移动、删除和收藏管理。</li>
 </ul>
-<h3>4. 删除或编辑</h3>
+<h3>4. 直观编辑</h3>
 <ul class="help-list">
-<li>将筹码或<strong>胶囊</strong>拖到🗑删除区即可立刻移除。</li>
-<li>长按胶囊约2秒可重命名。</li>
+<li><strong>长按(0.6秒)</strong> 任何 <strong>胶囊、筹码或收藏</strong> 即可直接在原位编辑名称。</li>
+<li>无需弹出窗口，自然地修改文本并回车保存。</li>
 </ul>
 <h3>5. 保存与读取</h3>
 <ul class="help-list">
@@ -34,10 +34,12 @@ window.LOCALES.zh = {
 <li><strong>打开文件</strong>用于加载从本应用保存的 JSON。</li>
 </ul>`,
         chipEmptyState: '👆 点击或拖动上方胶囊来添加筹码。',
+        chipEmptyStateNoCapsules: '📂 打开 JSON 文件或拖放到此处。',
         favoritesEmpty: '暂无收藏。',
         historyEmpty: '暂无历史记录。',
         popoverRandom: '🎲 随机',
         popoverAddPlaceholder: '搜索或添加...',
+        toastEmptyState: '⚠️ 没有可添加的筹码。',
         toastFavoritesAdded: '⭐ 已加入收藏！',
         toastFavoriteExists: '⚠️ 已经在收藏列表中。',
         toastFavoriteApplied: '✅ 已应用收藏！',

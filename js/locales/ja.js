@@ -20,12 +20,13 @@ window.LOCALES.ja = {
 <h3>3. お気に入り & 履歴</h3>
 <ul class="help-list">
 <li>⭐ お気に入りはドラッグで任意の位置に差し込めるプリセット、タップで全体を読み込めます。</li>
-<li>⏱ 履歴では直近のダイス結果を確認でき、<span class="inline-key">Ctrl+Z / Ctrl+Shift+Z</span> や 🎲 の左右の矢印で遡れます。</li>
+<li>生成履歴やお気に入りを<strong>エディタにドラッグ</strong>して読み込んだり、🗑 <strong>ゴミ箱に入れて削除</strong>できます。</li>
+<li><span class="inline-key">Ctrl+Z / Ctrl+Shift+Z</span> でチップの削除、移動、お気に入り管理など、ほぼ全ての操作を元に戻せます。</li>
 </ul>
-<h3>4. 削除 / 編集</h3>
+<h3>4. 直感的な編集</h3>
 <ul class="help-list">
-<li>チップや<strong>カプセル</strong>は🗑削除ゾーンにドラッグするとすぐに削除できます。</li>
-<li>カプセルは約2秒長押しで名前変更ができます。</li>
+<li><strong>カプセル、チップ、お気に入り</strong>を長押し(0.6秒)すると、その場で直接名前を編集できます。</li>
+<li>ポップアップなしでテキストを自然に修正し、Enterを押してください。</li>
 </ul>
 <h3>5. 保存と読み込み</h3>
 <ul class="help-list">
@@ -33,10 +34,12 @@ window.LOCALES.ja = {
 <li><strong>ファイルを開く</strong>と、このアプリで保存したJSONを復元できます。</li>
 </ul>`,
         chipEmptyState: '👆 上のカプセルをタップまたはドラッグして追加します。',
+        chipEmptyStateNoCapsules: '📂 JSONファイルを開くか、ここにドラッグ＆ドロップしてください。',
         favoritesEmpty: 'お気に入りはまだありません。',
         historyEmpty: '履歴がありません。',
         popoverRandom: '🎲 ランダム',
         popoverAddPlaceholder: '検索または追加...',
+        toastEmptyState: '⚠️ 追加できるチップがありません。',
         toastFavoritesAdded: '⭐ お気に入りに追加しました!',
         toastFavoriteExists: '⚠️ すでに登録されています。',
         toastFavoriteApplied: '✅ お気に入りを適用しました!',

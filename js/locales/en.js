@@ -7,7 +7,7 @@ window.LOCALES.en = {
 <ul class="help-list">
 <li><span class="inline-capsule-label">CAPSULE</span> Click or drag & drop from the top bar to add chips anywhere.</li>
 <li><span class="inline-chip-label">CHIP</span> Drag to reorder or insert between others; drop onto the 🗑 zone to delete.</li>
-<li>Tap a chip to edit options, long-press any entry to rename or clear it.</li>
+<li>Tap a chip to edit options.</li>
 <li>Tap the chip's 🎲 icon to lock it as a 🔒 so it won't roll.</li>
 <li>Click between chips to link or unlink them (switching between space and comma output).</li>
 <li><strong>Ctrl + Drag</strong> a chip to move or delete it <strong>individually</strong> (ignoring links).</li>
@@ -20,13 +20,13 @@ window.LOCALES.en = {
 <h3>3. Favorites & History</h3>
 <ul class="help-list">
 <li>⭐ Favorites work like drop-in presets: drag a favorite chip onto the board to insert its combo, or tap to load it entirely.</li>
-<li>⏱ History lets you revisit recent rolls. Use <span class="inline-key">Ctrl+Z / Ctrl+Shift+Z</span> or the arrows beside 🎲.</li>
-<li>Long-press a favorite chip to rename or delete it.</li>
+<li>Drag favorites or history items to the <strong>Editor</strong> to load, or to 🗑 <strong>Trash</strong> to delete.</li>
+<li><span class="inline-key">Ctrl+Z / Ctrl+Shift+Z</span> undoes almost anything: edits, moves, deletions, and favorites.</li>
 </ul>
-<h3>4. Edit or Delete</h3>
+<h3>4. Intuitive Editing</h3>
 <ul class="help-list">
-<li>Drag any chip or <strong>Capsule</strong> onto the 🗑 delete zone to remove it.</li>
-<li>Long-press a capsule for ~2 seconds to rename it.</li>
+<li><strong>Long-press (0.6s)</strong> any <strong>Capsule, Chip, or Favorite</strong> to edit its text inline.</li>
+<li>No popups—just natural text editing. Press Enter to save.</li>
 </ul>
 <h3>5. Save & Load</h3>
 <ul class="help-list">
@@ -34,11 +34,12 @@ window.LOCALES.en = {
 <li><strong>Open File</strong> restores a JSON that was saved from this app.</li>
 </ul>`,
         chipEmptyState: '👆 Tap or drag capsules above to add chips.',
+        chipEmptyStateNoCapsules: '📂 Open a JSON file or drag & drop it here.',
         favoritesEmpty: 'No favorites yet.',
         historyEmpty: 'No roll history yet.',
         popoverRandom: '🎲 Random',
         popoverAddPlaceholder: 'Search or Add...',
-        toastEmptyState: 'No active chips to add.',
+        toastEmptyState: '⚠️ No active chips to add.',
         toastFavoritesAdded: '⭐ Added to Favorites!',
         toastFavoriteExists: '⚠️ Already stored.',
         toastFavoriteApplied: '✅ Favorites applied!',
