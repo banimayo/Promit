@@ -10,7 +10,8 @@ window.LOCALES.zh = {
 <li>点击筹码可编辑选项，长按可进入编辑模式。</li>
 <li>点击筹码前的 🎲 将其切换为 🔒，即可固定该筹码。</li>
 <li>点击筹码之间可连接/断开，用来切换空格或逗号输出。</li>
-<li><strong>Ctrl + 拖动</strong> 可将连接的筹码单独分离移动或删除。</li>
+<li><strong>Ctrl + 拖动</strong> 芯片以（忽略链接）<strong>单独</strong>移动或删除它。</li>
+<li><strong>Alt + 单击</strong> 芯片切换 <strong>忽略模式</strong> 👻。芯片变暗，生成时将被忽略。</li>
 </ul>
 <h3>2. 生成与复制</h3>
 <ul class="help-list">
@@ -26,7 +27,8 @@ window.LOCALES.zh = {
 <h3>4. 直观编辑</h3>
 <ul class="help-list">
 <li><strong>长按(0.6秒)</strong> 任何 <strong>胶囊、筹码或收藏</strong> 即可直接在原位编辑名称。</li>
-<li>无需弹出窗口，自然地修改文本并回车保存。</li>
+<li>没有弹窗——只需自然地编辑文本。按回车键保存。</li>
+<li>在 <strong>弹出菜单</strong> 中，<strong>Alt + 单击</strong> 选项切换 <strong>被动模式</strong>（删除线）。它保留在列表中，但不参与随机生成。</li>
 </ul>
 <h3>5. 保存与读取</h3>
 <ul class="help-list">

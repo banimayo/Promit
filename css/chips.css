@@ -10,6 +10,7 @@
     margin-bottom: 20px;
     margin-top: 36px;
 }
+
 .chip {
     display: inline-flex;
     align-items: center;
@@ -34,6 +35,7 @@
     overflow: visible;
     background-color: var(--chip-bg, var(--item-bg));
 }
+
 .chip.scrolling-locked {
     white-space: nowrap !important;
     overflow: hidden !important;
@@ -41,22 +43,27 @@
     display: inline-flex !important;
     vertical-align: middle;
 }
+
 .chip-container.hide-icons {
     row-gap: 4px;
 }
+
 body.is-dragging .chip-container.hide-icons .chip {
     pointer-events: auto;
     opacity: 0.5;
 }
+
 .chip-container.hide-icons {
     position: relative;
     z-index: 1;
 }
+
 .chip-container.hide-icons .chip-icon,
 .chip-container.hide-icons .chip-copy-badge,
 .chip-container.hide-icons .chip-link-toggle {
     display: none;
 }
+
 .chip-container.hide-icons .chip {
     background-color: transparent;
     border-color: transparent;
@@ -66,9 +73,11 @@ body.is-dragging .chip-container.hide-icons .chip {
     height: 32px;
     color: var(--text-main);
 }
+
 .chip-container.hide-icons .chip .chip-icon {
     display: none;
 }
+
 .chip-container.hide-icons .chip:hover {
     background-color: transparent;
     box-shadow: none;
@@ -78,11 +87,13 @@ body.is-dragging .chip-container.hide-icons .chip {
     text-underline-offset: 4px;
     text-decoration-color: var(--text-sub);
 }
+
 .chip-container.hide-icons .chip:active {
     cursor: grabbing;
     background-color: transparent;
     opacity: 0.6;
 }
+
 .chip-container.hide-icons .chip-bridge,
 .chip-container.hide-icons .chip-drop-zone,
 .chip-container.hide-icons .chip-tail-drop {
@@ -100,6 +111,7 @@ body.is-dragging .chip-container.hide-icons .chip {
     z-index: 10;
     transition: width 0.1s ease;
 }
+
 .chip-container.hide-icons .chip-bridge:not(.active)::before {
     content: ",";
     color: var(--text-main);
@@ -112,19 +124,23 @@ body.is-dragging .chip-container.hide-icons .chip {
     white-space: pre;
     opacity: 0.7;
 }
+
 .chip-container.hide-icons .chip-bridge.active::before {
     content: " ";
     white-space: pre;
 }
+
 .chip-container.hide-icons .chip[data-has-comma="true"]::after,
 .chip-container.hide-icons .chip:not([data-has-comma="true"])::after {
     content: "" !important;
     margin: 0 !important;
 }
+
 .chip-container.hide-icons .chip.is-locked {
     font-weight: 600 !important;
     color: var(--text-main);
 }
+
 .chip-container.hide-icons .chip.search-highlight {
     background: transparent !important;
     box-shadow: none !important;
@@ -132,6 +148,7 @@ body.is-dragging .chip-container.hide-icons .chip {
     font-weight: normal !important;
     text-decoration: none;
 }
+
 .chip-container.hide-icons .chip-bridge::before,
 .chip-container.hide-icons .chip-drop-zone::before,
 .chip-container.hide-icons .chip-tail-drop::before {
@@ -143,6 +160,7 @@ body.is-dragging .chip-container.hide-icons .chip {
     height: 100%;
     z-index: 10;
 }
+
 body.is-dragging .chip-container.hide-icons .chip-bridge,
 body.is-dragging .chip-container.hide-icons .chip-drop-zone {
     width: 6px !important;
@@ -151,6 +169,7 @@ body.is-dragging .chip-container.hide-icons .chip-drop-zone {
     border-radius: 0;
     opacity: 1;
 }
+
 body.is-dragging .chip-container.hide-icons .chip-bridge.drag-over-gap::after,
 body.is-dragging .chip-container.hide-icons .chip-drop-zone.drag-over-gap::after {
     content: '' !important;
@@ -166,17 +185,21 @@ body.is-dragging .chip-container.hide-icons .chip-drop-zone.drag-over-gap::after
     z-index: 100;
     display: block !important;
 }
+
 body.is-dragging .chip-container.hide-icons .chip-bridge.drag-over-gap,
 body.is-dragging .chip-container.hide-icons .chip-drop-zone.drag-over-gap {
     background: transparent !important;
     transform: none !important;
 }
+
 .chip.dragging {
     opacity: 0.4;
 }
+
 .chip.is-empty {
     box-shadow: none;
 }
+
 .chip.linked-left {
     border-top-right-radius: 0px;
     border-bottom-right-radius: 0px;
@@ -185,6 +208,7 @@ body.is-dragging .chip-container.hide-icons .chip-drop-zone.drag-over-gap {
     z-index: 1;
     border-right: none;
 }
+
 .chip.linked-right {
     border-top-left-radius: 0px;
     border-bottom-left-radius: 0px;
@@ -192,12 +216,15 @@ body.is-dragging .chip-container.hide-icons .chip-drop-zone.drag-over-gap {
     padding-left: 10px;
     border-left: none;
 }
+
 .chip.shift-left {
     transform: translateX(-10px);
 }
+
 .chip.shift-right {
     transform: translateX(10px);
 }
+
 .chip-bridge {
     width: 12px;
     height: 38px;
@@ -210,10 +237,12 @@ body.is-dragging .chip-container.hide-icons .chip-drop-zone.drag-over-gap {
     user-select: none;
     transition: transform 0.18s ease;
 }
+
 .chip-bridge.active {
     width: 12px;
     margin: 0 -6px;
 }
+
 .chip-bridge::before,
 .chip-drop-zone::before,
 .chip-tail-drop::before,
@@ -229,6 +258,7 @@ body.is-dragging .chip-container.hide-icons .chip-drop-zone.drag-over-gap {
     background: transparent !important;
     pointer-events: none;
 }
+
 .chip-bridge.drag-over-gap::before,
 .chip-drop-zone.drag-over-gap::before,
 .chip-tail-drop.drag-over-gap::before,
@@ -239,6 +269,7 @@ body.is-dragging .chip-container.hide-icons .chip-drop-zone.drag-over-gap {
     opacity: 0 !important;
     border: none !important;
 }
+
 .chip-bridge.drag-over-gap::after,
 .chip-drop-zone.drag-over-gap::after,
 .chip-tail-drop.drag-over-gap::after,
@@ -262,27 +293,34 @@ body.is-dragging .chip-container.hide-icons .chip-drop-zone.drag-over-gap {
     pointer-events: none;
     animation: none;
 }
+
 .chip-bridge::after {
     display: none !important;
 }
+
 .chip-bridge:not(.active):hover::after,
 .chip-drop-zone:not(.head):not(.tail):hover::after,
 .chip-bridge.active:hover::after {
     display: block !important;
 }
+
 .chip-bridge.active::after {
     display: none;
 }
+
 body.is-dragging .chip-bridge::after {
     opacity: 0 !important;
 }
+
 body.is-dragging .chip-bridge.active {
     width: 24px;
     margin: 0 -12px;
 }
+
 body.is-dragging .chip-bridge.drag-over-gap::after {
     opacity: 1 !important;
 }
+
 .chip-bridge:not(.active):hover::after,
 .chip-drop-zone:not(.head):not(.tail):hover::after,
 .chip-bridge.active:hover::after {
@@ -301,38 +339,46 @@ body.is-dragging .chip-bridge.drag-over-gap::after {
     background-color: transparent !important;
     border-radius: 0 !important;
 }
+
 .chip-bridge:not(.active):hover::after,
 .chip-drop-zone:not(.head):not(.tail):hover::after {
     width: 14px;
     height: 14px;
     background-image: url("data:image/svg+xml,%3Csvg width='14' height='14' viewBox='0 0 14 14' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M7 0V14M0 7H14' stroke='%233498db' stroke-width='2' stroke-linecap='square'/%3E%3C/svg%3E");
 }
+
 .chip-bridge.active:hover::after {
     width: 10px;
     height: 24px;
     background-image: url("data:image/svg+xml,%3Csvg width='10' height='24' viewBox='0 0 10 24' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M5 2V22' stroke='%23ff3b30' stroke-width='2' stroke-linecap='round'/%3E%3C/svg%3E");
     transform: translate(-50%, -50%) rotate(15deg);
 }
+
 .chip-bridge:hover::before,
 .cap-bridge:hover::before,
 .cap-drop-zone:hover::before {
     content: '' !important;
     display: none !important;
 }
+
 .chip-container.hide-icons .chip-bridge:not(.active):hover::before {
     display: none !important;
 }
+
 .chip-container.hide-icons .chip-bridge:not(.active):hover::after {
     width: 12px !important;
     height: 12px !important;
     background-size: contain;
 }
+
 .chip-link-toggle {
     display: none !important;
 }
+
 .chip-bridge.drag-over-gap .chip-link-toggle {
     display: none;
 }
+
 .chip-drop-zone {
     display: inline-flex;
     height: 38px;
@@ -342,37 +388,45 @@ body.is-dragging .chip-bridge.drag-over-gap::after {
     justify-content: center;
     transition: transform 0.18s ease;
 }
+
 .chip-drop-zone.head {
     width: 24px;
     flex: 0 0 24px;
     margin-left: -20px;
     margin-right: 2px;
 }
+
 .chip-drop-zone.head::before {
     left: -24px;
     width: 60px;
 }
+
 .chip-drop-zone.tail {
     flex-grow: 1;
     min-width: 40px;
     width: auto;
 }
+
 .chip-drop-zone.gap-preview-edge-left {
     transform: translateX(10px);
 }
+
 .chip-drop-zone.gap-preview-edge-right {
     transform: translateX(-10px);
 }
+
 .chip-drop-zone.head.drag-over-gap::after {
     left: auto;
     right: -2px;
     transform: translate(0, -50%);
 }
+
 .chip-drop-zone.tail.drag-over-gap::after {
     left: 4px;
     right: auto;
     transform: translate(-30%, -50%);
 }
+
 .chip-tail-drop {
     display: inline-flex;
     position: relative;
@@ -382,11 +436,21 @@ body.is-dragging .chip-bridge.drag-over-gap::after {
     flex-grow: 0;
     flex-shrink: 0;
 }
+
 .chip.dragging {
+    opacity: 0.4;
     opacity: 0.4;
     transform: scale(0.95);
     filter: grayscale(100%);
 }
+
+.chip.is-bypassed {
+    opacity: 0.5;
+    filter: blur(1px) grayscale(50%);
+    text-decoration: line-through;
+    text-decoration-color: var(--text-sub);
+}
+
 .chip-icon {
     display: inline-flex;
     align-items: center;
@@ -398,12 +462,15 @@ body.is-dragging .chip-bridge.drag-over-gap::after {
     transition: transform 0.2s;
     user-select: none;
 }
+
 .chip-icon:hover {
     transform: scale(1.2);
 }
+
 .chip-icon:active {
     transform: scale(0.9);
 }
+
 .chip-copy-badge {
     position: absolute;
     top: 2px;
@@ -425,11 +492,13 @@ body.is-dragging .chip-bridge.drag-over-gap::after {
     transform: scale(0);
     transition: opacity 0.1s, transform 0.1s;
 }
+
 .chip.is-copy-mode .chip-copy-badge,
 .chip-ghost.is-copy-mode .chip-copy-badge {
     opacity: 1;
     transform: scale(1);
 }
+
 .chip-ghost {
     position: fixed;
     z-index: 9999;
@@ -440,9 +509,11 @@ body.is-dragging .chip-bridge.drag-over-gap::after {
     transform: none !important;
     transition: none !important;
 }
+
 [data-theme='dark'] .chip.is-copy-mode .chip-copy-badge {
     box-shadow: 0 1px 3px rgba(0, 0, 0, 0.6);
 }
+
 .search-highlight {
     z-index: 999 !important;
     position: relative;
@@ -452,15 +523,18 @@ body.is-dragging .chip-bridge.drag-over-gap::after {
     box-shadow: 0 0 0 2px var(--highlight), 0 0 12px rgba(52, 152, 219, 0.6);
     outline: none;
 }
+
 .chip-container.hide-icons .chip.search-highlight {
     text-decoration: underline !important;
     text-decoration-color: var(--highlight) !important;
     text-decoration-thickness: 2px !important;
     text-underline-offset: 2px;
 }
+
 [data-theme="dark"] .search-highlight {
     box-shadow: 0 0 0 2px #5dade2, 0 0 15px rgba(93, 173, 226, 0.6);
 }
+
 .empty-state {
     width: 100%;
     min-height: 240px;
@@ -479,20 +553,24 @@ body.is-dragging .chip-bridge.drag-over-gap::after {
     transition: all 0.2s;
     user-select: none;
 }
+
 .empty-state:hover {
     color: var(--highlight);
     border-color: var(--highlight);
     background: var(--surface-hover);
 }
+
 .chip-container.is-empty-state {
     margin-top: 0px;
     display: block;
     min-height: 240px;
     height: auto;
 }
+
 .chip-container.is-empty-state .empty-state {
     height: 100%;
 }
+
 .chip-container.drag-over .empty-state {
     color: var(--highlight);
     border-color: var(--highlight);

@@ -10,7 +10,8 @@ window.LOCALES.ko = {
 <li>칩을 클릭하면 와일드카드 목록을 추가·수정할 수 있고, 🗑 휴지통으로 드래그하면 삭제됩니다.</li>
 <li>칩 앞의 🎲 아이콘을 눌러 🔒 로 전환하면 해당 칩을 고정합니다.</li>
 <li>칩 사이를 클릭하면 연결/해제가 되어 띄어쓰기와 콤마 출력 방식을 바꿀 수 있습니다.</li>
-<li><strong>Ctrl + 드래그</strong>로 연결된 칩 중 하나만 따로 떼어내어 이동하거나 삭제할 수 있습니다.</li>
+<li><strong>Ctrl + 드래그</strong>로 칩을 <strong>개별적으로</strong> 이동하거나 삭제할 수 있습니다 (링크 무시).</li>
+<li>칩을 <strong>Alt + 클릭</strong>하면 <strong>바이패스 모드</strong> 👻로 전환됩니다. 칩이 흐릿해지며 프롬프트 생성 시 제외됩니다.</li>
 </ul>
 <h3>2. 생성과 복사</h3>
 <ul class="help-list">
@@ -26,7 +27,8 @@ window.LOCALES.ko = {
 <h3>4. 직관적인 편집</h3>
 <ul class="help-list">
 <li><strong>캡슐, 칩, 즐겨찾기</strong>를 길게 누르면(0.6초) 그 자리에서 바로 이름을 수정할 수 있습니다.</li>
-<li>번거로운 팝업 없이 텍스트만 자연스럽게 수정하고 Enter를 누르세요.</li>
+<li>번거로운 팝업 없이 자연스럽게 텍스트를 수정하세요. 엔터를 누르면 저장됩니다.</li>
+<li><strong>팝업 메뉴</strong>에서 옵션을 <strong>Alt + 클릭</strong>하면 <strong>패시브 모드</strong>(삭선)가 됩니다. 목록엔 남지만 랜덤 추첨에선 제외됩니다.</li>
 </ul>
 <h3>5. 파일 저장·불러오기</h3>
 <ul class="help-list">

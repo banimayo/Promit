@@ -232,7 +232,7 @@ class StateManager {
             if (entry && entry.items) {
                 this.items = JSON.parse(JSON.stringify(entry.items));
                 this.notify('stateChanged');
-                this.pushHistory();  
+                this.pushHistory();
             }
         }
     }
@@ -250,6 +250,7 @@ class StateManager {
             value: value,
             isRandom: false,
             linkNext: false,
+            isBypassed: false,
             color: baseColor
         };
     }
@@ -666,6 +667,40 @@ class StateManager {
             this.pushHistory();
             this.notify('stateChanged');
         }
+        this.notify('stateChanged');
+    }
+    toggleItemBypass(id) {
+        const item = this.findItemById(id);
+        if (item) {
+            item.isBypassed = !item.isBypassed;
+            this.pushHistory();
+            this.notify('stateChanged');
+        }
+    }
+    toggleOptionDisabled(type, value) {
+        const capsule = this.getCapsuleDefinition(type);
+        if (!capsule) return;
+        if (!capsule.disabledOptions) capsule.disabledOptions = [];
+
+        console.log(`[StateManager] Toggling disabled for [${type}]: '${value}'`); // Debug
+
+        const idx = capsule.disabledOptions.indexOf(value);
+        if (idx > -1) {
+            capsule.disabledOptions.splice(idx, 1);
+            console.log(`[StateManager] Removed '${value}'. Disabled:`, capsule.disabledOptions);
+        } else {
+            capsule.disabledOptions.push(value);
+            console.log(`[StateManager] Added '${value}'. Disabled:`, capsule.disabledOptions);
+        }
+        this.resetDeck(type);
+        this.saveData();
+        this.notify('capsulesChanged');
+    }
+    isOptionDisabled(type, value) {
+        const capsule = this.getCapsuleDefinition(type);
+        const isDisabled = capsule && capsule.disabledOptions && capsule.disabledOptions.includes(value);
+        // console.log(`[StateManager] Check '${value}'? ${isDisabled}`); // Verbose debug
+        return isDisabled;
     }
     drawFromDeck(type) {
         if (!type) return null;
@@ -674,19 +709,21 @@ class StateManager {
         if (!Array.isArray(opts) || opts.length === 0) return null;
         if (!this.randomDecks[type]) {
             this.randomDecks[type] = {
-                deck: this.shuffleList(opts),
+                deck: this.shuffleList(opts.filter(o => !this.isOptionDisabled(type, o))),
                 signature: this.getOptionsSignature(opts)
             };
         }
         const currentSig = this.getOptionsSignature(opts);
         if (this.randomDecks[type].signature !== currentSig) {
             this.randomDecks[type] = {
-                deck: this.shuffleList(opts),
+                deck: this.shuffleList(opts.filter(o => !this.isOptionDisabled(type, o))),
                 signature: currentSig
             };
         }
         if (this.randomDecks[type].deck.length === 0) {
-            this.randomDecks[type].deck = this.shuffleList(opts);
+            this.randomDecks[type].deck = this.shuffleList(
+                opts.filter(o => !this.isOptionDisabled(type, o))
+            );
         }
         return this.randomDecks[type].deck.pop();
     }
@@ -725,7 +762,7 @@ class StateManager {
         if (!list || !list.length) return "";
         let prompt = "";
         list.forEach((item, index) => {
-            if (!item.value) return;
+            if (!item.value || item.isBypassed) return;
             prompt += item.value;
             if (index < list.length - 1) {
                 if (item.linkNext) {

@@ -11,7 +11,7 @@ class Popover {
             const pop = this.element;
             if (pop.contains(e.target)) return;
 
-             
+
             const rect = pop.getBoundingClientRect();
             const buffer = 96;
             const inSafeZone = (
@@ -38,12 +38,12 @@ class Popover {
         this.position(chipEl);
         requestAnimationFrame(() => {
             const list = this.element.querySelector('.pop-list');
-             
+
             const targetEl = this.element.querySelector('.pop-item.val-match') || this.element.querySelector('.pop-item.selected');
 
             if (list && targetEl) {
-                 
-                 
+
+
                 const relativeTop = targetEl.offsetTop - list.offsetTop;
                 list.scrollTop = relativeTop - (list.clientHeight / 2) + (targetEl.clientHeight / 2);
             }
@@ -69,13 +69,13 @@ class Popover {
         const opts = this.state.getSortedOptions(type);
         const itemLabel = this.state.getTypeLabel(type);
 
-         
+
         let html = `<div class="pop-header">
                         <span class="pop-section-label">${Utils.escapeHtml(itemLabel)}</span>
                         <button type="button" class="pop-close-btn" aria-label="Close">×</button>
                     </div>`;
 
-         
+
         html += `<div class="pop-list">`;
         const isRand = item.isRandom ? 'selected' : '';
         html += `<div class="pop-item random-opt ${isRand}" data-random="true">${Utils.escapeHtml(this.t('popoverRandom'))}</div>`;
@@ -83,10 +83,12 @@ class Popover {
             const isMatch = (String(item.value) === String(opt));
             const selected = (isMatch && !item.isRandom) ? 'selected' : '';
             const matchClass = isMatch ? 'val-match' : '';
+            const isDisabled = this.state.isOptionDisabled(item.type, opt);
+            const disabledClass = isDisabled ? 'is-disabled-opt' : '';
             const safeVal = Utils.escapeAttribute(opt);
             const label = Utils.escapeHtml(opt);
             const editLabel = Utils.escapeAttribute(this.t('favEditTitle'));
-            html += `<div class="pop-item ${selected} ${matchClass}" data-val="${safeVal}">
+            html += `<div class="pop-item ${selected} ${matchClass} ${disabledClass}" data-val="${safeVal}">
                         <span class="pop-option-label">${label}</span>
                         <button type="button" class="pop-edit-btn" data-edit-val="${safeVal}" aria-label="${editLabel}" title="${editLabel}">
                             ${this.getEditIcon()}
@@ -95,16 +97,16 @@ class Popover {
         });
         html += `</div>`;
 
-         
-         
-         
-         
-         
-         
-         
+
+
+
+
+
+
+
 
         const placeholder = Utils.escapeAttribute(this.t('popoverAddPlaceholder'));
-        html += `<div class="pop-add-row"><input class="pop-add-input" type="text" placeholder="${placeholder}"></div>`;
+        html += `<div class="pop-add-row"><input class="pop-add-input" type="text" name="popover_add_option" placeholder="${placeholder}"></div>`;
         this.element.innerHTML = html;
         this.bindEvents(item);
     }
@@ -125,16 +127,37 @@ class Popover {
         }
         this.element.querySelectorAll('.pop-item[data-val]').forEach(el => {
             const val = el.getAttribute('data-val');
-            el.addEventListener('click', (e) => {
+
+            // Use onclick to ensure single handler and cleaner event flow
+            el.onclick = (e) => {
                 if (e.target.closest('.pop-edit-btn') || e.target.closest('input')) return;
+
+                if (e.altKey) {
+                    e.preventDefault();
+                    e.stopPropagation();
+                    e.stopImmediatePropagation();
+
+                    const list = this.element.querySelector('.pop-list');
+                    const savedScroll = list ? list.scrollTop : 0;
+
+                    this.state.toggleOptionDisabled(item.type, val);
+                    const freshItem = this.state.findItemById(item.id);
+                    if (freshItem) this.renderContent(freshItem);
+
+                    const newList = this.element.querySelector('.pop-list');
+                    if (newList) newList.scrollTop = savedScroll;
+                    return;
+                }
+
                 this.setValue(item.id, val);
-            });
+            };
+
             const editBtn = el.querySelector('.pop-edit-btn');
             if (editBtn) {
-                editBtn.addEventListener('click', (e) => {
+                editBtn.onclick = (e) => {
                     e.stopPropagation();
                     this.enableInlineEdit(el, item.type, val);
-                });
+                };
             }
         });
         const addInput = this.element.querySelector('.pop-add-input');
@@ -223,7 +246,7 @@ class Popover {
     }
     enableInlineEdit(el, type, oldVal) {
         const safeVal = Utils.escapeAttribute(oldVal);
-        el.innerHTML = `<input type="text" class="inline-edit-input" value="${safeVal}" style="width:100%; border:none; background:transparent; font:inherit; color:inherit; outline:none;">`;
+        el.innerHTML = `<input type="text" name="popover_edit_option" class="inline-edit-input" value="${safeVal}" style="width:100%; border:none; background:transparent; font:inherit; color:inherit; outline:none;">`;
         const input = el.querySelector('input');
         input.focus();
         const save = () => {

@@ -11,6 +11,7 @@ window.LOCALES.en = {
 <li>Tap the chip's 🎲 icon to lock it as a 🔒 so it won't roll.</li>
 <li>Click between chips to link or unlink them (switching between space and comma output).</li>
 <li><strong>Ctrl + Drag</strong> a chip to move or delete it <strong>individually</strong> (ignoring links).</li>
+<li><strong>Alt + Click</strong> a chip to toggle <strong>Bypass Mode</strong> 👻. It fades out and is ignored during generation.</li>
 </ul>
 <h3>2. Generate & Copy</h3>
 <ul class="help-list">
@@ -27,6 +28,7 @@ window.LOCALES.en = {
 <ul class="help-list">
 <li><strong>Long-press (0.6s)</strong> any <strong>Capsule, Chip, or Favorite</strong> to edit its text inline.</li>
 <li>No popups—just natural text editing. Press Enter to save.</li>
+<li>In the <strong>Popup Menu</strong>, <strong>Alt + Click</strong> an option to toggle <strong>Passive Mode</strong> (strikethrough). It stays in the list but won't be picked by random rolls.</li>
 </ul>
 <h3>5. Save & Load</h3>
 <ul class="help-list">

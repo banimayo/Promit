@@ -158,6 +158,7 @@ class ChipEditor {
         const prevItem = index > 0 ? this.state.items[index - 1] : null;
         if (prevItem && prevItem.linkNext) el.classList.add('linked-right');
         if (!item.isRandom) el.classList.add('is-locked');
+        if (item.isBypassed) el.classList.add('is-bypassed');
         if (item.value === "") el.classList.add('is-empty');
         if (item.value) {
             el.style.backgroundColor = "";
@@ -198,6 +199,10 @@ class ChipEditor {
 
         el.onclick = (e) => {
             if (el.classList.contains('dragging') || el.classList.contains('inline-editing')) return;
+            if (e.altKey) {
+                this.state.toggleItemBypass(item.id);
+                return;
+            }
             if (window.app && window.app.popover) {
                 if (window.app.popover.activeKey === item.id) window.app.popover.close();
                 else window.app.popover.open(item, el);
@@ -404,25 +409,25 @@ class ChipEditor {
     activateInlineEdit(item, el) {
         if (el.querySelector('.inline-input')) return;
 
-         
+
         if (window.app && window.app.popover) window.app.popover.close();
 
         el.classList.add('inline-editing');
         el.setAttribute('draggable', 'false');
 
-         
+
         el.innerHTML = '';
 
         const span = document.createElement('span');
         span.className = 'inline-input';
         span.contentEditable = 'plaintext-only';
-         
+
         span.textContent = item.value || '';
         span.spellcheck = false;
 
         el.appendChild(span);
 
-         
+
         setTimeout(() => {
             span.focus();
             if (span.textContent.length > 0) {
@@ -436,10 +441,10 @@ class ChipEditor {
 
             if (save) {
                 const newValue = span.textContent.trim();
-                 
+
                 if (newValue !== item.value) {
                     item.value = newValue;
-                    item.isRandom = false;  
+                    item.isRandom = false;
                     this.state.pushHistory();
                     this.state.notify('stateChanged');
                     return;

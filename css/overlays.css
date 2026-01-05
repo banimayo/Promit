@@ -104,13 +104,7 @@
     background: rgba(52, 152, 219, 0.1);
 }
 
-.pop-option-label {
-    flex: 1;
-    display: inline-flex;
-    align-items: center;
-    gap: 6px;
-    color: var(--text-main);
-}
+/* Moved to Popover/style.css */
 
 .pop-edit-btn {
     border: none;
@@ -140,12 +134,43 @@
     background: rgba(0, 0, 0, 0.05);
 }
 
+
+
 [data-theme="dark"] .pop-option-label {
     color: var(--text-main);
 }
 
-[data-theme="dark"] .pop-edit-btn {
-    color: #f0f0f0;
+.pop-item.is-disabled-opt {
+    opacity: 0.6 !important;
+    background-color: rgba(128, 128, 128, 0.2) !important;
+}
+
+.pop-item.is-disabled-opt .pop-option-label {
+    text-decoration: line-through !important;
+    color: var(--text-sub) !important;
+}
+
+/* Explicit strikethrough via pseudo-element to guarantee visibility */
+.pop-item.is-disabled-opt .pop-option-label::after {
+    content: '';
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: 50%;
+    height: 1px;
+    background: currentColor;
+    transform: translateY(-50%);
+    pointer-events: none;
+}
+
+.pop-option-label {
+    flex: 1;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    color: var(--text-main);
+    position: relative;
+    width: fit-content;
 }
 
 .pop-item.random-opt {
@@ -431,7 +456,7 @@
     color: var(--text-main);
 }
 
- 
+
 .pop-list::-webkit-scrollbar {
     width: 6px;
     height: 6px;

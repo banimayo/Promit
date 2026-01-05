@@ -11,6 +11,7 @@
 *   **Long-Press (0.6s)**: **Inline Edit** mode. Modify the text directly in place without popups.
 *   **Drag & Drop**: Reorder chips.
 *   **Alt + Drag**: **Duplicate (Copy)** the chip to a new position.
+*   **Alt + Click**: Toggle **Bypass Mode**. The chip fades out and is ignored during prompt generation, but stays on the board.
 *   **Alt + Scroll**: Rapidly **cycle through options** without opening the menu. (Width locks temporarily for stability).
 *   **Drag to Trash**: Drop any chip (or **Linked Group**) into the trash icon (bottom-left) to delete it.
 
@@ -45,6 +46,8 @@
 | **Ctrl + Drag** | **Move/Delete Single Chip** (Ignore Links) |
 | **Ctrl + Z** | **Global Undo** (Moves, Edits, Deletions, Favorites) |
 | **Ctrl + Y** / **Ctrl + Shift + Z** | Redo |
+| **Alt + Click** (Chip) | Toggle **Bypass Mode** (Ignore in Prompt) |
+| **Alt + Click** (Popup Option) | Toggle **Passive Mode** (Strikethrough / Exclude from Random) |
 | **Alt + Drag** | Copy Chip |
 | **Alt + Scroll** | Cycle Chip Options |
 | **Space / Enter** | Confirm (in Dialogs) |
@@ -55,6 +58,7 @@
 ## 🛠 Features
 
 *   **Smart Randomization**: Chips marked with 🎲 pick a random value from their capsule each roll. Chips marked with 🔒 keep their value.
+*   **Passive Options**: Alt-Click an option in the popup to "cross it out". It remains in the list but will never be chosen by the dice.
 *   **Linked Dragging**: Dragging a chip that is "Linked" to others will move the **entire chain** together.
 *   **Theme Engine**: Built-in Light/Dark mode and Color Palette generator.
 *   **Import/Export**: detailed JSON state management in Settings.
